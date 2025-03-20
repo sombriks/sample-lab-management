@@ -21,6 +21,13 @@ Use [dotnet cli][cli] to scaffold a minimal web project:
 dotnet new web -o sample-lab-management
 ```
 
+Add dotnet tools in the path:
+
+```bash
+echo 'export PATH=$HOME/.dotnet/tools:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
 ## How to build
 
 ```bash
