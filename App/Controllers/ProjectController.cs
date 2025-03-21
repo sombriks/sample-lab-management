@@ -11,47 +11,47 @@ namespace sample_lab_management.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class ProjectController : ControllerBase
     {
         private readonly ModelsContext _context;
 
-        public StudentController(ModelsContext context)
+        public ProjectController(ModelsContext context)
         {
             _context = context;
         }
 
-        // GET: api/Student
+        // GET: api/Project
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Projects.ToListAsync();
         }
 
-        // GET: api/Student/5
+        // GET: api/Project/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(long id)
+        public async Task<ActionResult<Project>> GetProject(long id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var project = await _context.Projects.FindAsync(id);
 
-            if (student == null)
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return student;
+            return project;
         }
 
-        // PUT: api/Student/5
+        // PUT: api/Project/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(long id, Student student)
+        public async Task<IActionResult> PutProject(long id, Project project)
         {
-            if (id != student.Id)
+            if (id != project.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(student).State = EntityState.Modified;
+            _context.Entry(project).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace sample_lab_management.App.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(id))
+                if (!ProjectExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace sample_lab_management.App.Controllers
             return NoContent();
         }
 
-        // POST: api/Student
+        // POST: api/Project
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        public async Task<ActionResult<Project>> PostProject(Project project)
         {
-            _context.Students.Add(student);
+            _context.Projects.Add(project);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+            return CreatedAtAction("GetProject", new { id = project.Id }, project);
         }
 
-        // DELETE: api/Student/5
+        // DELETE: api/Project/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(long id)
+        public async Task<IActionResult> DeleteProject(long id)
         {
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            _context.Students.Remove(student);
+            _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool StudentExists(long id)
+        private bool ProjectExists(long id)
         {
-            return _context.Students.Any(e => e.Id == id);
+            return _context.Projects.Any(e => e.Id == id);
         }
     }
 }

@@ -16,6 +16,20 @@ sudo dnf install dotnet-sdk-9.0
 sudo dnf install dotnet-sdk-8.0
 ```
 
+Install [code generation tools][codegen]:
+
+```bash
+dotnet tool install -g dotnet-aspnet-codegenerator
+dotnet tool install -g dotnet-ef
+```
+
+Add dotnet tools in the path:
+
+```bash
+echo 'export PATH=$HOME/.dotnet/tools:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
 Use [dotnet cli][cli] to scaffold a minimal web project:
 
 ```bash
@@ -26,6 +40,7 @@ cd sample-lab-management
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore.InMemory
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 
@@ -33,22 +48,9 @@ mkdir -p App/{Controllers,Models}
 
 touch App/Main.cs
 touch App/Models/Student.cs
-touch App/Models/StudentContext.cs
-```
-
-Install [code generation tools][codegen]:
-
-```bash
-dotnet tool uninstall -g dotnet-aspnet-codegenerator
-dotnet tool install -g dotnet-aspnet-codegenerator
-dotnet tool update -g dotnet-aspnet-codegenerator
-```
-
-Add dotnet tools in the path:
-
-```bash
-echo 'export PATH=$HOME/.dotnet/tools:$PATH' >> ~/.bashrc
-source ~/.bashrc
+touch App/Models/Laboratory.cs
+touch App/Models/Projectz.cs
+touch App/Models/ModelsContext.cs
 ```
 
 ### Controller scaffolding
@@ -57,10 +59,22 @@ In order to create a controller class, use thd sample bellow:
 
 ```bash
 dotnet aspnet-codegenerator controller \
- -name StudentController -async -api \
- -m Student -dc StudentContext \
+ -name ProjectController -async -api \
+ -m Project -dc ModelsContext \
  -outDir App/Controllers
 ```
+
+### Migration scaffolding
+
+To create database migrations:
+
+```bash
+ dotnet ef migrations add InitialSchema
+```
+
+Where `InitialSchema` is the migration name.
+
+Those migrations are generated based on models.
 
 ## How to build
 
@@ -83,6 +97,10 @@ dotnet run
 ## Noteworthy
 
 - By the time of this writing, controller generation fails on sdk 9.
+- In terms of tooling, Jetbrains Rider isn't a reliable alternative to vscode,
+  at leas on linux.
+- There is a simpler "minimal web api" besides the controller based one, but for
+  the sake of the exercise we went with controller style.
 
 [repo]: https://github.com/sombriks/sample-lab-management
 [fedora]: https://fedoraproject.org/

@@ -1,4 +1,4 @@
-using App;
+using sample_lab_management.App;
 
-var app = new Main(args);
-app.Run();
+var program = new Main(args);
+program.app.Run();

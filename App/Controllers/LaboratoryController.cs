@@ -11,47 +11,47 @@ namespace sample_lab_management.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class LaboratoryController : ControllerBase
     {
         private readonly ModelsContext _context;
 
-        public StudentController(ModelsContext context)
+        public LaboratoryController(ModelsContext context)
         {
             _context = context;
         }
 
-        // GET: api/Student
+        // GET: api/Laboratory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<Laboratory>>> GetLaboratories()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Laboratories.ToListAsync();
         }
 
-        // GET: api/Student/5
+        // GET: api/Laboratory/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(long id)
+        public async Task<ActionResult<Laboratory>> GetLaboratory(long id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var laboratory = await _context.Laboratories.FindAsync(id);
 
-            if (student == null)
+            if (laboratory == null)
             {
                 return NotFound();
             }
 
-            return student;
+            return laboratory;
         }
 
-        // PUT: api/Student/5
+        // PUT: api/Laboratory/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(long id, Student student)
+        public async Task<IActionResult> PutLaboratory(long id, Laboratory laboratory)
         {
-            if (id != student.Id)
+            if (id != laboratory.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(student).State = EntityState.Modified;
+            _context.Entry(laboratory).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace sample_lab_management.App.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(id))
+                if (!LaboratoryExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace sample_lab_management.App.Controllers
             return NoContent();
         }
 
-        // POST: api/Student
+        // POST: api/Laboratory
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        public async Task<ActionResult<Laboratory>> PostLaboratory(Laboratory laboratory)
         {
-            _context.Students.Add(student);
+            _context.Laboratories.Add(laboratory);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+            return CreatedAtAction("GetLaboratory", new { id = laboratory.Id }, laboratory);
         }
 
-        // DELETE: api/Student/5
+        // DELETE: api/Laboratory/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(long id)
+        public async Task<IActionResult> DeleteLaboratory(long id)
         {
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+            var laboratory = await _context.Laboratories.FindAsync(id);
+            if (laboratory == null)
             {
                 return NotFound();
             }
 
-            _context.Students.Remove(student);
+            _context.Laboratories.Remove(laboratory);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool StudentExists(long id)
+        private bool LaboratoryExists(long id)
         {
-            return _context.Students.Any(e => e.Id == id);
+            return _context.Laboratories.Any(e => e.Id == id);
         }
     }
 }
