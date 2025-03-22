@@ -91,14 +91,15 @@ dotnet run
 ## How to test
 
 ```bash
-
+# under construction
 ```
+
+There is also a [/swagger][swagger] endpoint to offer an easy way to try the
+endpoints.
 
 ## Noteworthy
 
 - By the time of this writing, controller generation fails on sdk 9.
-- In terms of tooling, Jetbrains Rider isn't a reliable alternative to vscode,
-  at least on linux.
 - There is a simpler "minimal web api" besides the controller based one, but for
   the sake of the exercise we went with controller style.
 
@@ -107,3 +108,4 @@ dotnet run
 [dotnet]: https://dotnet.microsoft.com/en-us/download
 [cli]: https://learn.microsoft.com/pt-br/dotnet/core/tools/dotnet-new#synopsis
 [codegen]: https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-9.0&tabs=visual-studio-code#scaffold-a-controller
+[swagger]: https://learn.microsoft.com/pt-br/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-8.0&tabs=net-cli#add-and-configure-swagger-middleware
