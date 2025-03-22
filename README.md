@@ -1,6 +1,6 @@
 # [sample-lab-management][repo]
 
-sample dotnet rest api
+Sample dotnet rest api
 
 ## Environment
 
@@ -98,7 +98,7 @@ dotnet run
 
 - By the time of this writing, controller generation fails on sdk 9.
 - In terms of tooling, Jetbrains Rider isn't a reliable alternative to vscode,
-  at leas on linux.
+  at least on linux.
 - There is a simpler "minimal web api" besides the controller based one, but for
   the sake of the exercise we went with controller style.
 
