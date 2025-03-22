@@ -22,9 +22,11 @@ namespace sample_lab_management.App.Controllers
 
         // GET: api/Student
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudents(string q = "")
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Students
+                .Where(s => s.Name != null && s.Name.Contains(q))
+                .ToListAsync();
         }
 
         // GET: api/Student/5

@@ -22,16 +22,21 @@ namespace sample_lab_management.App.Controllers
 
         // GET: api/Project
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
+        public async Task<ActionResult<IEnumerable<Project>>> GetProjects(string q="")
         {
-            return await _context.Projects.ToListAsync();
+            return await _context.Projects
+                .Where(p => p.Name != null && p.Name.Contains(q))
+                .ToListAsync();
         }
 
         // GET: api/Project/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Project>> GetProject(long id)
         {
-            var project = await _context.Projects.FindAsync(id);
+            var project = await _context.Projects
+                .Include(p => p.Students)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
 
             if (project == null)
             {

@@ -22,9 +22,11 @@ namespace sample_lab_management.App.Controllers
 
         // GET: api/Laboratory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Laboratory>>> GetLaboratories()
+        public async Task<ActionResult<IEnumerable<Laboratory>>> GetLaboratories(string q="")
         {
-            return await _context.Laboratories.ToListAsync();
+            return await _context.Laboratories
+                .Where(l => l.Name != null && l.Name.Contains(q))
+                .ToListAsync();
         }
 
         // GET: api/Laboratory/5

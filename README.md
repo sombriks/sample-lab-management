@@ -103,6 +103,41 @@ endpoints.
 - There is a simpler "minimal web api" besides the controller based one, but for
   the sake of the exercise we went with controller style.
 
+## Database schema
+
+```mermaaid
+classDiagram
+direction BT
+class Laboratories {
+   text Name
+   integer Id
+}
+class LaboratoryStudent {
+   integer LaboratoriesId
+   integer StudentsId
+}
+class ProjectStudent {
+   integer ProjectsId
+   integer StudentsId
+}
+class Projects {
+   integer LaboratoryId
+   text Name
+   integer Id
+}
+class Students {
+   text Name
+   integer Id
+}
+
+LaboratoryStudent  -->  Laboratories : LaboratoriesId:Id
+LaboratoryStudent  -->  Students : StudentsId:Id
+ProjectStudent  -->  Projects : ProjectsId:Id
+ProjectStudent  -->  Students : StudentsId:Id
+Projects  -->  Laboratories : LaboratoryId:Id
+
+```
+
 [repo]: https://github.com/sombriks/sample-lab-management
 [fedora]: https://fedoraproject.org/
 [dotnet]: https://dotnet.microsoft.com/en-us/download

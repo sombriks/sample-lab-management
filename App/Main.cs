@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace sample_lab_management.App;
 
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +13,9 @@ public class Main
   public Main(string[] args)
   {
     var builder = WebApplication.CreateBuilder(args);
-    builder.Services.AddControllers();
+    builder.Services.AddControllers()
+        .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
     builder.Services.AddOpenApiDocument();
     
     builder.Services.AddDbContext<ModelsContext>(opt =>
