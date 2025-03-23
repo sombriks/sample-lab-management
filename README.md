@@ -1,5 +1,7 @@
 # [sample-lab-management][repo]
 
+[![dotnet CI](https://github.com/sombriks/sample-lab-management/actions/workflows/build.yml/badge.svg)](https://github.com/sombriks/sample-lab-management/actions/workflows/build.yml)
+
 Sample dotnet rest api.
 
 ## Environment
