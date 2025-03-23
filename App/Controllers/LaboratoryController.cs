@@ -33,8 +33,12 @@ namespace sample_lab_management.App.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Laboratory>> GetLaboratory(long id)
         {
-            var laboratory = await _context.Laboratories.FindAsync(id);
-
+            var laboratory = await _context.Laboratories
+                .Where(l => l.Id == id)
+                .Include(l => l.Students)
+                .Include(l => l.Projects)
+                .FirstOrDefaultAsync();
+                
             if (laboratory == null)
             {
                 return NotFound();
@@ -98,6 +102,50 @@ namespace sample_lab_management.App.Controllers
             _context.Laboratories.Remove(laboratory);
             await _context.SaveChangesAsync();
 
+            return NoContent();
+        }
+
+        [HttpPut("{id}/student/{studentId}")]
+        public async Task<IActionResult> AddStudent(long id, long studentId)
+        {
+            var laboratory = await _context.Laboratories.FindAsync(id);
+            var student = await _context.Students.FindAsync(studentId);
+            
+            if (laboratory == null || student == null)
+            {
+                return NotFound();
+            }
+            
+            laboratory.Students.Add(student);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return Conflict();
+            }
+
+            return NoContent();
+        }
+        
+        [HttpDelete("{id}/student/{studentId}")]
+        public async Task<IActionResult> RemoveStudent(long id, long studentId)
+        {
+            var laboratory = await _context.Laboratories
+                .Where(l => l.Id == id)
+                .Include(l => l.Students)
+                .FirstOrDefaultAsync();
+            var student = await _context.Students.FindAsync(studentId);
+            
+            if (laboratory == null || student == null)
+            {
+                return NotFound();
+            }
+            
+            laboratory.Students.Remove(student);
+            await _context.SaveChangesAsync();
+            
             return NoContent();
         }
 

@@ -34,8 +34,8 @@ namespace sample_lab_management.App.Controllers
         public async Task<ActionResult<Project>> GetProject(long id)
         {
             var project = await _context.Projects
-                .Include(p => p.Students)
                 .Where(p => p.Id == id)
+                .Include(p => p.Students)
                 .FirstOrDefaultAsync();
 
             if (project == null)
@@ -101,6 +101,50 @@ namespace sample_lab_management.App.Controllers
             _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
 
+            return NoContent();
+        }
+
+        [HttpPut("{id}/student/{studentId}")]
+        public async Task<IActionResult> AddStudent(long id, long studentId)
+        {
+            var project = await _context.Projects.FindAsync(id);
+            var student = await _context.Students.FindAsync(studentId);
+            
+            if (project == null || student == null)
+            {
+                return NotFound();
+            }
+            
+            project.Students.Add(student);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return Conflict();
+            }
+
+            return NoContent();
+        }
+        
+        [HttpDelete("{id}/student/{studentId}")]
+        public async Task<IActionResult> RemoveStudent(long id, long studentId)
+        {
+            var project = await _context.Projects
+                .Where(p => p.Id == id)
+                .Include(p => p.Students)
+                .FirstOrDefaultAsync();
+            var student = await _context.Students.FindAsync(studentId);
+            
+            if (project == null || student == null)
+            {
+                return NotFound();
+            }
+            
+            project.Students.Remove(student);
+            await _context.SaveChangesAsync();
+            
             return NoContent();
         }
 

@@ -1,11 +1,14 @@
 # [sample-lab-management][repo]
 
-Sample dotnet rest api
+Sample dotnet rest api.
 
 ## Environment
 
 - [Fedora 41][fedora]
 - [,Net Core 8.0][dotnet]
+
+As preferred IDE, either use [visual studio code][code] or
+[jetbrains rider][rider].
 
 ## Initial setup
 
@@ -29,6 +32,8 @@ Add dotnet tools in the path:
 echo 'export PATH=$HOME/.dotnet/tools:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
+
+### How this project was scaffolded
 
 Use [dotnet cli][cli] to scaffold a minimal web project:
 
@@ -144,3 +149,5 @@ Projects  -->  Laboratories : LaboratoryId:Id
 [cli]: https://learn.microsoft.com/pt-br/dotnet/core/tools/dotnet-new#synopsis
 [codegen]: https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-9.0&tabs=visual-studio-code#scaffold-a-controller
 [swagger]: https://learn.microsoft.com/pt-br/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-8.0&tabs=net-cli#add-and-configure-swagger-middleware
+[code]: https://code.visualstudio.com/
+[rider]: https://www.jetbrains.com/rider/
