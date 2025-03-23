@@ -115,18 +115,6 @@ woks as well.
 There is also a [/swagger][swagger] endpoint to offer an easy way to try the
 endpoints.
 
-## Noteworthy
-
-- By the time of this writing, controller generation fails on sdk 9.
-- There is a simpler "minimal web api" besides the controller based one, but for
-  the sake of the exercise we went with controller style.
-- Unit and integration tests are not present. Most .NET test frameworks tested
-  demand a dedicated test project, so it would demand a solution layout change.
-- Entity framework does a decent job on query building. It is similar to
-  [knex][knex].
-- Database migrations base themselves in the current state of the models. A
-  better, more flexible approach allowing sql scripts is more desirable.
-
 ## Entity schema
 
 ```mermaid
@@ -153,24 +141,52 @@ classDiagram
         text Name
         integer Id
     }
-    LaboratoryStudent --> Laboratories: LaboratoriesId:Id
-    LaboratoryStudent --> Students: StudentsId:Id
-    ProjectStudent --> Projects: ProjectsId:Id
-    ProjectStudent --> Students: StudentsId:Id
-    Projects --> Laboratories: LaboratoryId:Id
+    LaboratoryStudent --> Laboratories
+    LaboratoryStudent --> Students
+    ProjectStudent --> Projects
+    ProjectStudent --> Students
+    Projects --> Laboratories
 ```
 
 ## Endpoints
 
-| URI                  | Verbs            | Description                            |
-|----------------------|------------------|----------------------------------------|
-| /status              | GET              | simple status check                    | 
-| /api/laboratory      | GET, POST        | list and create laboratories           | 
-| /api/student         | GET, POST        | list and create students               | 
-| /api/project         | GET, POST        | list and create projects               | 
-| /api/laboratory/{id} | GET, PUT, DELETE | find, update and remove one laboratory | 
-| /api/student/{id}    | GET, PUT, DELETE | find, update and remove one student    | 
-| /api/project/{id}    | GET, PUT, DELETE | find, update and remove one project    | 
+| URI                                         | Verbs            | Description                                   |
+|---------------------------------------------|------------------|-----------------------------------------------|
+| /status                                     | GET              | simple status check                           | 
+| /api/laboratory                             | GET, POST        | list and create laboratories                  | 
+| /api/student                                | GET, POST        | list and create students                      | 
+| /api/project                                | GET, POST        | list and create projects                      | 
+| /api/laboratory/{id}                        | GET, PUT, DELETE | find, update and remove one laboratory        | 
+| /api/student/{id}                           | GET, PUT, DELETE | find, update and remove one student           | 
+| /api/project/{id}                           | GET, PUT, DELETE | find, update and remove one project           | 
+| /api/laboratory/{id}/student/{studentId}    | PUT, DELETE      | add and remove laboratory/student association | 
+| /api/student/{id}/laboratory/{laboratoryId} | PUT, DELETE      | add and remove laboratory/student association | 
+| /api/student/{id}/project/{projectId}       | PUT, DELETE      | add and remove project/student association    | 
+| /api/student/{id}/project/{projectId}       | PUT, DELETE      | add and remove project/student association    | 
+
+## Noteworthy
+
+- By the time of this writing, controller generation fails on sdk 9.
+- There is a simpler "minimal web api" besides the controller based one, but for
+  the sake of the exercise we went with controller style.
+- Unit and integration tests are not present. Most .NET test frameworks tested
+  demand a dedicated test project, so it would demand a solution layout change.
+- Entity framework does a decent job on query building. It is similar to
+  [knex][knex].
+- Database migrations base themselves in the current state of the models. A
+  better, more flexible approach allowing sql scripts is more desirable.
+
+## Future improvements
+
+- Fix solution layout to comport test project.
+- Proper environment variables setup. For example, database config is hardcoded.
+- Switch database to Postgres. sqlite is enough for a sample, but hardly will be
+  enough for production scenarios.
+- Cover the code with proper unit and integration tests.
+- Add the rest of the endpoints into the postman collection. Also add more test 
+  scenarios beyond the _happy path_.
+- Integrate the tests into CI pipeline.
+- Implement docker image building and publishing in CI.
 
 [repo]: https://github.com/sombriks/sample-lab-management
 
