@@ -99,6 +99,19 @@ dotnet run
 # under construction
 ```
 
+### e2e tests
+
+In order to easily check the endpoints, run the provided
+[postman collection using newman][newman]:
+
+```bash
+# sudo npm -g install newman
+newman run sample-lab-management.postman_collection.json 
+```
+
+It requires [nodejs][node] to be installed, but import collection into postman
+woks as well.
+
 There is also a [/swagger][swagger] endpoint to offer an easy way to try the
 endpoints.
 
@@ -107,47 +120,76 @@ endpoints.
 - By the time of this writing, controller generation fails on sdk 9.
 - There is a simpler "minimal web api" besides the controller based one, but for
   the sake of the exercise we went with controller style.
+- Unit and integration tests are not present. Most .NET test frameworks tested
+  demand a dedicated test project, so it would demand a solution layout change.
+- Entity framework does a decent job on query building. It is similar to
+  [knex][knex].
+- Database migrations base themselves in the current state of the models. A
+  better, more flexible approach allowing sql scripts is more desirable.
 
-## Database schema
+## Entity schema
 
-```mermaaid
+```mermaid
 classDiagram
-direction BT
-class Laboratories {
-   text Name
-   integer Id
-}
-class LaboratoryStudent {
-   integer LaboratoriesId
-   integer StudentsId
-}
-class ProjectStudent {
-   integer ProjectsId
-   integer StudentsId
-}
-class Projects {
-   integer LaboratoryId
-   text Name
-   integer Id
-}
-class Students {
-   text Name
-   integer Id
-}
-
-LaboratoryStudent  -->  Laboratories : LaboratoriesId:Id
-LaboratoryStudent  -->  Students : StudentsId:Id
-ProjectStudent  -->  Projects : ProjectsId:Id
-ProjectStudent  -->  Students : StudentsId:Id
-Projects  -->  Laboratories : LaboratoryId:Id
-
+    direction BT
+    class Laboratories {
+        text Name
+        integer Id
+    }
+    class LaboratoryStudent {
+        integer LaboratoriesId
+        integer StudentsId
+    }
+    class ProjectStudent {
+        integer ProjectsId
+        integer StudentsId
+    }
+    class Projects {
+        integer LaboratoryId
+        text Name
+        integer Id
+    }
+    class Students {
+        text Name
+        integer Id
+    }
+    LaboratoryStudent --> Laboratories: LaboratoriesId:Id
+    LaboratoryStudent --> Students: StudentsId:Id
+    ProjectStudent --> Projects: ProjectsId:Id
+    ProjectStudent --> Students: StudentsId:Id
+    Projects --> Laboratories: LaboratoryId:Id
 ```
 
+## Endpoints
+
+| URI                  | Verbs            | Description                            |
+|----------------------|------------------|----------------------------------------|
+| /status              | GET              | simple status check                    | 
+| /api/laboratory      | GET, POST        | list and create laboratories           | 
+| /api/student         | GET, POST        | list and create students               | 
+| /api/project         | GET, POST        | list and create projects               | 
+| /api/laboratory/{id} | GET, PUT, DELETE | find, update and remove one laboratory | 
+| /api/student/{id}    | GET, PUT, DELETE | find, update and remove one student    | 
+| /api/project/{id}    | GET, PUT, DELETE | find, update and remove one project    | 
+
 [repo]: https://github.com/sombriks/sample-lab-management
+
 [fedora]: https://fedoraproject.org/
+
 [dotnet]: https://dotnet.microsoft.com/en-us/download
+
 [cli]: https://learn.microsoft.com/pt-br/dotnet/core/tools/dotnet-new#synopsis
+
 [codegen]: https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-9.0&tabs=visual-studio-code#scaffold-a-controller
+
 [swagger]: https://learn.microsoft.com/pt-br/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-8.0&tabs=net-cli#add-and-configure-swagger-middleware
+
 [code]: https://code.visualstudio.com/
+
 [rider]: https://www.jetbrains.com/rider/
+
+[newman]: https://learning.postman.com/docs/collections/using-newman-cli/installing-running-newman/
+
+[node]: https://nodejs.org
+
+[knex]: https://knexjs.org
